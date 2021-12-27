@@ -1,6 +1,8 @@
 name: Archive PSJP
 on:
   workflow_dispatch:
+  schedule:
+  - cron: '0 * * * *'
 
 jobs:
   archive:

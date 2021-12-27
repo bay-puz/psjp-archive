@@ -162,7 +162,7 @@ def main():
 
     min_id = load_id() if args.min is None else args.min
     max_id = get_latest_problem_id() + 1 if args.max is None else args.max
-    limit = 1000 if args.limit is None else args.limit
+    limit = 600 if args.limit is None else args.limit
 
     if min_id + limit < max_id:
         max_id = min_id + limit
