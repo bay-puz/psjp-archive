@@ -5,7 +5,6 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from sys import stderr
-from time import sleep
 
 ID_FILE = "data/archived-id.txt"
 DATA_FILE = "data/data.json"
@@ -152,7 +151,6 @@ def loop(min: int, max: int):
 
         with open(DATA_FILE, 'a', encoding="utf8") as f:
             f.write(json.dumps(data, ensure_ascii=False, indent=2))
-        sleep(1)
 
 
 def main():
@@ -164,7 +162,7 @@ def main():
 
     min_id = load_id() if args.min is None else args.min
     max_id = get_latest_problem_id() + 1 if args.max is None else args.max
-    limit = 3600 if args.limit is None else args.limit
+    limit = 1000 if args.limit is None else args.limit
 
     if min_id + limit < max_id:
         max_id = min_id + limit
