@@ -86,8 +86,10 @@ def get_author(soup):
 def get_puzzle(soup):
     puzzle = soup.find('div', id='puzzle_title').find('a')
     puzzle_name = puzzle.get_text()
-    puzzle_id = re.search('[0-9]+$', puzzle.get('href')).group()
-    return puzzle_id, puzzle_name
+    puzzle_id = re.search('[0-9]+$', puzzle.get('href'))
+    if puzzle_id is None:
+        return -1, "その他"
+    return puzzle_id.group(), puzzle_name
 
 
 def get_variant(soup):
@@ -154,10 +156,16 @@ def loop(min: int, max: int):
 
 
 def main():
-    min_id = load_id()
-    max_id = get_latest_problem_id() + 1
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--max', type=int)
+    parser.add_argument('--min', type=int)
+    parser.add_argument('--limit', type=int)
+    args = parser.parse_args()
 
-    limit = 3600
+    min_id = load_id() if args.min is None else args.min
+    max_id = get_latest_problem_id() + 1 if args.max is None else args.max
+    limit = 3600 if args.limit is None else args.limit
+
     if min_id + limit < max_id:
         max_id = min_id + limit
 
