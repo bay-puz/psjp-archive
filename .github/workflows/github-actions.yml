@@ -10,9 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install packages
-        run: |
-          pip install beautifulsoup4
-          sudo apt-get install -y jq fonts-motoya-l-maruberi
+        run: pip install beautifulsoup4
       - name: crawl psjp data
         run: python script/crawl-psjp-problems.py
       - name: git push
