@@ -1,0 +1,23 @@
+name: Archive PSJP
+on:
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install packages
+        run: |
+          pip install beautifulsoup4
+          sudo apt-get install -y jq fonts-motoya-l-maruberi
+      - name: crawl psjp data
+        run: python script/crawl-psjp-problems.py
+      - name: git push
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+          git add data/archived-id.txt
+          git add data/data.json
+          git commit -m "update psjp data"
+          git push origin main
