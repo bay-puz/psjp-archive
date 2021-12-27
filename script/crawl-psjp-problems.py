@@ -157,6 +157,10 @@ def main():
     min_id = load_id()
     max_id = get_latest_problem_id() + 1
 
+    limit = 3600
+    if min_id + limit < max_id:
+        max_id = min_id + limit
+
     loop(min_id, max_id)
     write_id(max_id)
 
