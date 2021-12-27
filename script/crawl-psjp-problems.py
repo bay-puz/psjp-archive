@@ -68,7 +68,11 @@ def is_error_page(soup):
 
 
 def get_link(soup):
-    return soup.find('div', id='ext_links').find('a').get('href')
+    link_element = soup.find('div', id='ext_links')
+    if link_element is None:
+        image_path = soup.find('div', id='puz_main').find('img').get('src')
+        return image_path.replace('../', "https://puzsq.jp/")
+    return link_element.find('a').get('href')
 
 
 def get_author(soup):
@@ -88,7 +92,7 @@ def get_puzzle(soup):
 
 def get_variant(soup):
     variant = soup.find('span', id='variant')
-    return variant is not None
+    return 0 if variant is None else 1
 
 
 def get_created_at(soup):
@@ -141,7 +145,7 @@ def loop(min: int, max: int):
     for problem_id in range(min, max):
         data = get_problem_data_by_id(problem_id)
         if data is None:
-            print("error: invalid page (problem_id: {}, data={})".format(problem_id, data), file=stderr)
+            print("error: invalid page (problem_id: {})".format(problem_id), file=stderr)
             continue
 
         with open(DATA_FILE, 'a', encoding="utf8") as f:
