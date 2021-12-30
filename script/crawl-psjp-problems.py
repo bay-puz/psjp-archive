@@ -155,20 +155,19 @@ def loop(min: int, max: int):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--max', type=int)
-    parser.add_argument('--min', type=int)
-    parser.add_argument('--limit', type=int)
+    parser.add_argument('--id', type=int)
     args = parser.parse_args()
 
-    min_id = load_id() if args.min is None else args.min
-    max_id = get_latest_problem_id() + 1 if args.max is None else args.max
-    limit = 600 if args.limit is None else args.limit
+    min_id = load_id() if args.id is None else args.id
+    max_id = get_latest_problem_id() + 1 if args.id is None else args.id + 1
 
+    limit = 600
     if min_id + limit < max_id:
         max_id = min_id + limit
 
     loop(min_id, max_id)
-    write_id(max_id)
+    if args.id is None:
+        write_id(max_id)
 
 
 if __name__ == '__main__':

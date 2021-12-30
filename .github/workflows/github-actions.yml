@@ -10,11 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: install packages
-        run: pip install beautifulsoup4
+        run: |
+          pip install beautifulsoup4
+          sudo apt-get install -y jq
       - name: crawl psjp data
         run: python script/crawl-psjp-problems.py
+      - name: archive reserved problem # 予約された問題が後から投稿されるので、さかのぼってアーカイブする
+        run: |
+          MAX=$(cat data/archived-id.txt)
+          for N in $(seq $((MAX-1000)) ${MAX}); do jq .id data/data.json | grep -qx ${N} || python script/crawl-psjp-problems.py --id ${N}; done
       - name: git push
         run: |
+          if ! git diff --exit-code; then exit 0; fi
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
           git add data/archived-id.txt
