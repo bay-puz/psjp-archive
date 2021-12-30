@@ -18,7 +18,7 @@ jobs:
       - name: archive reserved problem # 予約された問題が後から投稿されるので、さかのぼってアーカイブする
         run: |
           MAX=$(cat data/archived-id.txt)
-          for N in $(seq $((MAX-1000)) ${MAX}); do jq .id data/data.json | grep -qx ${N} || python script/crawl-psjp-problems.py --id ${N}; done
+          for N in $(seq $((MAX-100)) $((MAX-1))); do jq .id data/data.json | grep -qx ${N} || python script/crawl-psjp-problems.py --id ${N}; done
       - name: git push
         run: |
           if ! git diff --exit-code; then exit 0; fi
