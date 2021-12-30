@@ -15,6 +15,7 @@ jobs:
         run: python script/crawl-psjp-problems.py
       - name: git push
         run: |
+          if ! git diff --exit-code; then exit 0; fi
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
           git add data/archived-id.txt
