@@ -165,6 +165,9 @@ def main():
     if min_id + limit < max_id:
         max_id = min_id + limit
 
+    if max_id < min_id:
+        return
+
     loop(min_id, max_id)
     if args.id is None:
         write_id(max_id)
